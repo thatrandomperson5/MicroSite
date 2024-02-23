@@ -66,7 +66,7 @@ self.addEventListener("fetch", (event) => {
     })());
   } else if (domainName == url.hostname) {
     console.log("Redirect!");
-    event.respondWith(redirect(request, "/view" + request.url));
+    event.respondWith(redirect(request, "/view" + url.pathname));
   } else {
     console.log("Direct!");
 
