@@ -211,6 +211,8 @@ function init() {
     // init currentFile
     //currentFile = currentFile || "";
     // window.location.href = `#filepath-${currentFile}`;
+    hashEventHandle(null);
+
   };
   request.onupgradeneeded = FileBase.initObjectStore;
 
@@ -226,7 +228,6 @@ function init() {
 
   // document.getElementById("currentFile").textContent = currentFile; 
 
-  hashEventHandle(null);
 
 
 }
