@@ -33,17 +33,35 @@ self.addEventListener("fetch", (event) => {
   console.log(request.url);
   if (domainName == url.hostname && url.pathname.startsWith("/view/")) {
     console.log("File!");
-
+    var content = "text/plain";
     var path = url.pathname.length == 6 ? "index.html" : url.pathname.slice(6);
     if (path.endsWith("/")) {
-      path = path + "/index.html";
+      path = path + "index.html";
     }
+
+    if (path.endsWith(".html")) {
+      content = "text/html";
+    }
+    if (path.endsWith(".js")) {
+      content = "text/javascript";
+    }
+    if (path.endsWith(".css")) {
+      content = "text/css";
+    }
+    if (path.endsWith(".json")) {
+      content = "application/json";
+    }
+    
     event.respondWith((async () => {
       try {
         let file = await database.readFile(path);
-        return new Response(await file.content.text());
+        return new Response(await file.content.text(), {
+          headers: {"Content-Type": content}
+        });
       } catch (error) {
-        return new Response(error.toString(), {"status": 404});
+        return new Response(error.toString(), {"status": 404, 
+          headers: {"Content-Type": "text/html; charset=utf-8"}
+        });
       }
     })());
   } else if (domainName == url.hostname) {
