@@ -38,7 +38,7 @@ self.addEventListener("fetch", (event) => {
     if (path.endsWith("/") || path.length == 0) {
       path = path + "/index.html";
     }
-    return (async () => {
+    event.respondWith(async () => {
       try {
         let file = await database.readFile(path);
         return new Response(await file.content.text());
