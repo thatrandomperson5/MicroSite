@@ -228,5 +228,5 @@ function init() {
 
 
 }
-window.location.hash = "";
+window.location.href = "#";
 init();
