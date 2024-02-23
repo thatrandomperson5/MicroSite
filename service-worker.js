@@ -3,7 +3,7 @@ importScripts("/assets/filebase.js");
 var database;
 
 // Database
-let request = window.indexedDB.open("FileDatabase");
+let request = indexedDB.open("FileDatabase");
 request.onerror = (event) => {
   console.error(`Database error: ${event.target.errorCode}`);
 };
