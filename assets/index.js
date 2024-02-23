@@ -199,7 +199,6 @@ function init() {
 
   }
   window.addEventListener("hashchange", hashEventHandle);
-  hashEventHandle(null);
 
   // init db
   let request = window.indexedDB.open("FileDatabase");
@@ -227,6 +226,7 @@ function init() {
 
   // document.getElementById("currentFile").textContent = currentFile; 
 
+  hashEventHandle(null);
 
 
 }
