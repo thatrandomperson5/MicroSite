@@ -143,6 +143,21 @@ function deleteFolder(path) {
   if (confirm("Delete " + path)) {}
 }
 
+
+function isValidFile(path) {
+	var tree = JSON.parse(window.localStorage.getItem("fileTree"));
+  var result = true;
+  path.forEach((item) => {
+  	if (tree.hasOwnProperty(item)) {
+    	tree = tree[item];
+    } else {
+    	result = false;
+      return;
+    }
+  });
+
+}
+
 // KillSwitch
 const killChannel = new BroadcastChannel("microsite_killswitch_v1");
 
@@ -164,6 +179,9 @@ function init() {
     let hash = window.location.hash;
 
     currentFile = hash.slice(10);
+    if (!isValidFile(currentFile.split("/"))) {
+    	window.location.href = "#filepath-index.html";
+    }
     // window.localStorage.setItem("currentFile", currentFile);
     // let path = hash.slice(10).split("/");
     // let filename = path[path.length - 1];
