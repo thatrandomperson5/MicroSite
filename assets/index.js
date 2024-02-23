@@ -228,4 +228,5 @@ function init() {
 
 
 }
+window.location.hash = "";
 init();
