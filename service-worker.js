@@ -16,7 +16,7 @@ request.onupgradeneeded = FileBase.initObjectStore;
 // utils
 
 async function redirect(request, url) {
-  return new Response("",
+  return new Response("", {
     "status": 308,
     "headers": {
       "Location": url
