@@ -38,14 +38,14 @@ self.addEventListener("fetch", (event) => {
     if (path.endsWith("/") || path.length == 0) {
       path = path + "/index.html";
     }
-    event.respondWith(async () => {
+    event.respondWith((async () => {
       try {
         let file = await database.readFile(path);
         return new Response(await file.content.text());
       } catch (error) {
         return new Response(error.toString(), {"status": 404});
       }
-    })();
+    })());
   } else if (domainName == url.hostname) {
     console.log("Redirect!");
     event.respondWith(redirect(request, "/view" + request.url));
