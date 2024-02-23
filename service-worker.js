@@ -35,7 +35,7 @@ self.addEventListener("fetch", (event) => {
     console.log("File!");
 
     var path = url.pathname.slice(6);
-    if (path.endsWith("/")) {
+    if (path.endsWith("/") || path.length == 0) {
       path = path + "/index.html";
     }
     return (async () => {
