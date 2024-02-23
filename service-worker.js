@@ -52,6 +52,6 @@ self.addEventListener("fetch", (event) => {
   } else {
     console.log("Direct!");
 
-    event.respondWith(fetch(request));
+    //event.respondWith(fetch(request));
   }
 });
