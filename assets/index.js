@@ -160,11 +160,11 @@ function init() {
     }
   }
 
-  window.addEventListener("hashchange", (event) => {
+  const hashEventHandle = (event) => {
     let hash = window.location.hash;
 
     currentFile = hash.slice(10);
-    window.localStorage.setItem("currentFile", currentFile);
+    // window.localStorage.setItem("currentFile", currentFile);
     // let path = hash.slice(10).split("/");
     // let filename = path[path.length - 1];
     if (currentFile != "") {
@@ -197,7 +197,9 @@ function init() {
 
 
 
-  });
+  }
+  window.addEventListener("hashchange", hashEventHandle);
+  hashEventHandle(null);
 
   // init db
   let request = window.indexedDB.open("FileDatabase");
@@ -208,8 +210,8 @@ function init() {
     console.log("Database active!");
     database = new FileBase(event.target.result);
     // init currentFile
-    currentFile = window.localStorage.getItem("currentFile") || "";
-    window.location.href = `#filepath-${currentFile}`;
+    //currentFile = currentFile || "";
+    // window.location.href = `#filepath-${currentFile}`;
   };
   request.onupgradeneeded = FileBase.initObjectStore;
 
@@ -228,5 +230,4 @@ function init() {
 
 
 }
-window.location.href = "#";
 init();
