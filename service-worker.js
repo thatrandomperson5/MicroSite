@@ -34,7 +34,7 @@ self.addEventListener("fetch", (event) => {
   if (domainName == url.hostname && url.pathname.startsWith("/view/")) {
     console.log("File!");
 
-    var path = path.length == 0 ? "index.html" : url.pathname.slice(6);
+    var path = url.pathname.length == 6 ? "index.html" : url.pathname.slice(6);
     if (path.endsWith("/")) {
       path = path + "/index.html";
     }
