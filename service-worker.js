@@ -27,9 +27,13 @@ async function redirect(request, url) {
 const domainName = self.location.hostname;
 
 self.addEventListener("fetch", (event) => {
+  
   let request = event.request;
   let url = new URL(request.url);
+  console.log(request.url);
   if (domainName == url.hostname && url.pathname.startsWith("/view/")) {
+    console.log("File!");
+
     var path = url.pathname.slice(6);
     if (path.endsWith("/")) {
       path = path + "/index.html";
@@ -43,8 +47,11 @@ self.addEventListener("fetch", (event) => {
       }
     })();
   } else if (domainName == url.hostname) {
+    console.log("Redirect!");
     event.respondWith(redirect(request, "/view" + request.url));
   } else {
+    console.log("Direct!");
+
     event.respondWith(fetch(request));
   }
 });
