@@ -3,13 +3,7 @@ var database;
 
 // Codemirror
 
-var cm = CodeMirror(document.getElementById("editor"), {
-  value: "<!-- Please choose a file! -->",
-  mode: "htmlmixed",
-  theme: "darcula",
-  lineNumbers: true,
-});
-cm.setSize("100%", "100%");
+var cm;
 
 // Filetree
 
@@ -22,7 +16,7 @@ function renderFolder(name, path, children) {
                 ${name}
               </a>
               </span>
-              <button class="text-danger btn btn-link p-0 m-0"><i class="bi bi-trash3"></i></button>
+              <button class="text-danger btn btn-link p-0 m-0" onclick="deleteFolder('${path}')"><i class="bi bi-trash3"></i></button>
             </p>
             <ul class="collapse" id="filepath-${path}">
               ${children}
@@ -38,7 +32,7 @@ function renderFiles(files, path = []) {
     if (typeof value === 'string' || value instanceof String) {
       result += `<li class="d-inline-flex justify-content-between w-100">
       <span><i class="bi bi-file-earmark-code-fill"></i>&nbsp;<a href="#filepath-${npath.join("/")}">${key}</a></span>
-      <button class="text-danger btn btn-link p-0 m-0" onclick="deleteFile('${path}')"><i class="bi bi-trash3"></i></button>
+      <button class="text-danger btn btn-link p-0 m-0" onclick="deleteFile('${path.join("/")}')"><i class="bi bi-trash3"></i></button>
       </li>`
     } else {
       let childResult = renderFiles(value, npath)
@@ -68,7 +62,24 @@ function deleteKey(object, keys) { // https://stackoverflow.com/questions/514505
   return object;
 }
 
+function hasChildren(object, path) {
+  var o = object;
+  path.forEach((item) => {
+    o = o[item];
+  });
+  return o != "id" && Object.keys(o).length > 0;
+}
+
 // Click event handles
+
+function runHandle(event) {
+  let ipreview = document.getElementById("result-inline");
+  if (ipreview.classList.contains("d-none")) {
+    window.location.href = '/view.html';
+  } else {
+    ipreview.src = "/view.html";
+  }
+}
 
 function addFolder(event) {
   var tree = JSON.parse(window.localStorage.getItem("fileTree"));
@@ -122,6 +133,8 @@ function saveFile(event) {
 
 }
 
+
+
 function deleteFile(path) {
   if (confirm("Delete " + path)) {
 
@@ -140,30 +153,70 @@ function deleteFile(path) {
 }
 
 function deleteFolder(path) {
-  if (confirm("Delete " + path)) {}
+  var tree = JSON.parse(window.localStorage.getItem("fileTree"));
+  if (hasChildren(tree, path.split("/"))) {
+    alert("You can only delete empty folders!");
+    return;
+  }
+  if (confirm("Delete " + path)) {
+
+    deleteKey(tree, path.split("/"));
+    window.localStorage.setItem("fileTree", JSON.stringify(tree));
+    document.getElementById("fileTree").innerHTML = renderFiles(
+      tree
+    );
+  }
 }
 
 
 function isValidFile(path) {
-	var tree = JSON.parse(window.localStorage.getItem("fileTree"));
+  var tree = JSON.parse(window.localStorage.getItem("fileTree"));
   var result = true;
+
   path.forEach((item) => {
-  	if (tree.hasOwnProperty(item)) {
-    	tree = tree[item];
+
+    if (tree.hasOwnProperty(item)) {
+      tree = tree[item];
     } else {
-    	result = false;
+      result = false;
       return;
     }
   });
-
+  return result;
 }
 
 // KillSwitch
 const killChannel = new BroadcastChannel("microsite_killswitch_v1");
 
+
+
+
+
 // Init
 
 function init() {
+  // Codemirror
+  cm = CodeMirror(document.getElementById("editor"), {
+    value: "<!-- Please choose a file! -->",
+    mode: "htmlmixed",
+    theme: "lesser-dark",
+    lineNumbers: true,
+    lint: true,
+    showHint: {},
+    autoCloseBrackets: true,
+    autoCloseTags: true,
+    matchBrackets: true,
+    matchTags: {
+      bothTags: true
+    },
+    gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+    foldGutter: true,
+    styleActiveLine: true
+  });
+  cm.setSize("100%", "100%");
+
+
+  // kill
 
   killChannel.postMessage({
     "action": "killAll"
@@ -180,7 +233,7 @@ function init() {
 
     currentFile = hash.slice(10);
     if (!isValidFile(currentFile.split("/"))) {
-    	window.location.href = "#filepath-index.html";
+      window.location.href = "#filepath-index.html";
     }
     // window.localStorage.setItem("currentFile", currentFile);
     // let path = hash.slice(10).split("/");
@@ -229,24 +282,26 @@ function init() {
     // init currentFile
     //currentFile = currentFile || "";
     // window.location.href = `#filepath-${currentFile}`;
-    hashEventHandle(null);
 
+    // init variables
+    if (window.localStorage.getItem("fileTree") == null) {
+      window.localStorage.setItem("fileTree", "{\"index.html\": \"id\"}");
+      database.saveFile("index.html", "<!-- Please choose a file! -->")
+    }
+
+    document.getElementById("fileTree").innerHTML = renderFiles(
+      JSON.parse(window.localStorage.getItem("fileTree"))
+    );
+
+
+    hashEventHandle(null);
   };
   request.onupgradeneeded = FileBase.initObjectStore;
 
-
-  // init variables
-  if (window.localStorage.getItem("fileTree") == null) {
-    window.localStorage.setItem("fileTree", "{}");
-  }
-
-  document.getElementById("fileTree").innerHTML = renderFiles(
-    JSON.parse(window.localStorage.getItem("fileTree"))
-  );
 
   // document.getElementById("currentFile").textContent = currentFile; 
 
 
 
 }
-init();
+window.onload = init;
