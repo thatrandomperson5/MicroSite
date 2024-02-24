@@ -55,7 +55,9 @@
         console.log(actualUrl);
         document.getElementById("win").setAttribute("src", actualUrl);
       }
-      goTo(window.localStorage.getItem("viewerUrl"));
+      window.onload = () => {
+        goTo(window.localStorage.getItem("viewerUrl"));
+      }
 
     </script>
   </body>
