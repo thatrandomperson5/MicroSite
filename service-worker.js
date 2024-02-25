@@ -43,7 +43,7 @@ self.addEventListener("fetch", (event) => {
       path = path + "index.html";
     }
 
-    if (!(path in legalPaths)) {
+    if (!legalPaths.includes(path)) {
       console.log(path);
       event.respondWith((async () => {
         return new Response("404 Not Found", {"status": 404, 
