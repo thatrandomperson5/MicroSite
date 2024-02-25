@@ -161,7 +161,8 @@
           document.head.appendChild(e);
           return e
         };
-        const recursiveWriteDep = (list, i) => {
+        var recursiveWriteDep;
+        recursiveWriteDep = (list, i) => {
           writeDep(list[i]).onload = (event) => {
             if (i < list.length) {
               recursivesiveWriteDep(list, i+1)
