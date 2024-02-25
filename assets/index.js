@@ -190,7 +190,7 @@ const killChannel = new BroadcastChannel("microsite_killswitch_v1");
 
 
 // Modal handle
-document.getElementById("loadModalTrigger").click();
+document.getElementById("loadModalTrigger").onload = ((event) => event.target.click());
 
 document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
   let trigger = document.getElementById("loadModalTrigger");
