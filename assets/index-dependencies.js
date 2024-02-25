@@ -155,6 +155,7 @@
             e.setAttribute("href", item.url);
           } else {
             e.setAttribute("src", item.url);
+            e.setAttribute("defer", "true");
           }
 
           document.head.appendChild(e);
