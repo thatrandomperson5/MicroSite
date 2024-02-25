@@ -48,7 +48,7 @@ class FileBase {
 
         return await new Promise((resolve, reject) => {
             request.onerror = (event) => {
-                throw event.target.error;
+                // throw event.target.error;
                 reject(event.target.error);
             };
             request.onsuccess = (event) => {
@@ -69,7 +69,7 @@ class FileBase {
 
         return await new Promise((resolve, reject) => {
             request.onerror = (event) => {
-                throw event.target.error;
+                // throw event.target.error;
                 reject(event.target.error);
             };
             request.onsuccess = (event) => {
@@ -78,6 +78,24 @@ class FileBase {
 
             };
         });
+    }
+
+    async keys() {
+        let fileStore = this.#idb.transaction("files", "readonly").objectStore("files");
+        const request = fileStore.getAllKeys();
+
+
+        return await new Promise((resolve, reject) => {
+            request.onerror = (event) => {
+                // throw event.target.error;
+                reject(event.target.error);
+            };
+            request.onsuccess = (event) => {
+
+                resolve(request.result);
+
+            };
+        });        
     }
 
 
