@@ -146,7 +146,8 @@
             type: "js"
           }
         ];
-        deps.forEach((item) => {
+        
+        const writeDep = (item) => {
           let e = item.type == "css" ? document.createElement("link") : document.createElement("script");
           e.setAttribute("crossorigin", "anonymous");
           e.setAttribute("referrerpolicy", "no-referrer");
@@ -158,7 +159,15 @@
           }
 
           document.head.appendChild(e);
+          return e
         });
+        const recursiveWriteDep = (list, i) => {
+          writeDep(list[i]).onload = (event) => {
+            if (i < list.length) {
+              recursivesiveWriteDep(list, i+1)
+            }
+          }
+        }
+        recursiveWriteDep(deps, 0);
+     
       }
-// So freaking buggy, so tmp fix
-var CodeMirror = null;
