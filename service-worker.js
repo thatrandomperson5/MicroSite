@@ -1,6 +1,7 @@
 importScripts("/assets/filebase.js");
 
 var database;
+var legalPaths;
 
 // Database
 let request = indexedDB.open("FileDatabase");
@@ -10,6 +11,9 @@ request.onerror = (event) => {
 request.onsuccess = (event) => {
   console.log("Database active!");
   database = new FileBase(event.target.result);
+  database.keys().then((result) => {
+    legalPaths = result;
+  });
 };
 request.onupgradeneeded = FileBase.initObjectStore;
 
@@ -39,6 +43,16 @@ self.addEventListener("fetch", (event) => {
       path = path + "index.html";
     }
 
+    if (!(path in legalPaths)) {
+      console.log(path);
+      event.respondWith(async () => {
+        return new Response("404 Not Found", {"status": 404, 
+          headers: {"Content-Type": "text/html; charset=utf-8"}
+        });
+      });
+      return;
+    }
+
     if (path.endsWith(".html")) {
       content = "text/html";
     }
@@ -59,7 +73,7 @@ self.addEventListener("fetch", (event) => {
           headers: {"Content-Type": content}
         });
       } catch (error) {
-        return new Response(error.toString(), {"status": 404, 
+        return new Response(error.toString(), {"status": 500, 
           headers: {"Content-Type": "text/html; charset=utf-8"}
         });
       }
