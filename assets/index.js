@@ -189,12 +189,24 @@ function isValidFile(path) {
 const killChannel = new BroadcastChannel("microsite_killswitch_v1");
 
 
+// Modal handle
+document.getElementById("loadModalTrigger").click();
 
+document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
+  let trigger = document.getElementById("loadModalTrigger");
+  let modal = document.getElementById("loadModal");
+  if (modal.classList.contains("show")) {
+    trigger.click();
+  }
+});
 
 
 // Init
 
 function init() {
+
+
+
   // Codemirror
   cm = CodeMirror(document.getElementById("editor"), {
     value: "<!-- Please choose a file! -->",
