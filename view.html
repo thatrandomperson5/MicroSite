@@ -16,11 +16,11 @@
     <link rel="stylesheet" href="/assets/style.css">
   </head>
 
-  <body class="h-100 mw-100">
+  <body class="h-100 d-flex flex-column">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
 
-        <a class="navbar-brand d-flex align-items-center " href="/">
+        <a class="navbar-brand d-flex align-items-center" id="branding" href="/">
           <i class="bi bi-motherboard-fill fs-3 lh-1"></i>&nbsp;<span class="lh-1">MicroSite</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,6 +44,9 @@
     
     </iframe>
     <script>
+      if (window.self !== window.top) {
+        document.getElementById("branding").classList.add("d-none");
+      }
       if (window.localStorage.getItem("viewerUrl") == null) {
         window.localStorage.setItem("viewerUrl", "/");
       }
