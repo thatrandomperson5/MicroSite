@@ -42,6 +42,9 @@ self.addEventListener("fetch", (event) => {
     if (path.endsWith("/")) {
       path = path + "index.html";
     }
+    if (!path.includes(".")) {
+      path = path + ".html";
+    }
 
     if (!legalPaths.includes(path)) {
       console.log(path);
