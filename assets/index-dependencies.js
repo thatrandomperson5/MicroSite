@@ -165,7 +165,7 @@
         recursiveWriteDep = (list, i) => {
           writeDep(list[i]).onload = (event) => {
             if (i < list.length) {
-              recursivesiveWriteDep(list, i+1)
+              recursiveWriteDep(list, i+1)
             }
           }
         }
