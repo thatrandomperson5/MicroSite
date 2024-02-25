@@ -45,11 +45,11 @@ self.addEventListener("fetch", (event) => {
 
     if (!(path in legalPaths)) {
       console.log(path);
-      event.respondWith(async () => {
+      event.respondWith((async () => {
         return new Response("404 Not Found", {"status": 404, 
           headers: {"Content-Type": "text/html; charset=utf-8"}
         });
-      });
+      })());
       return;
     }
 
