@@ -1,4 +1,5 @@
-     {
+const globalPageDependenciesLoaded = new Event("globalPageDependenciesLoaded");
+{
         let deps = [
           // Bootstrap
           {
@@ -164,8 +165,10 @@
         var recursiveWriteDep;
         recursiveWriteDep = (list, i) => {
           writeDep(list[i]).onload = (event) => {
-            if (i < list.length) {
+            if (i < (list.length-1)) {
               recursiveWriteDep(list, i+1)
+            } else {
+              document.head.dispatchEvent(globalPageDependenciesLoaded);
             }
           }
         }
