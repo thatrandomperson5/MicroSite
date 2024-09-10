@@ -316,4 +316,4 @@ function init() {
 
 
 }
-window.addEventListener("load", init);
+document.head.addEventListener("globalPageDependenciesLoaded", init);
