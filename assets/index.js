@@ -242,6 +242,8 @@ function init() {
 
   const hashEventHandle = (event) => {
     let hash = window.location.hash;
+    // Sneaky save
+    saveFile(event);
 
     currentFile = hash.slice(10);
     if (!isValidFile(currentFile.split("/"))) {
@@ -256,7 +258,7 @@ function init() {
 
 
         if (file === undefined) {
-          console.warn("IOS Incompatibiltiy, defaulting to empty strings instead of db defaults.!")
+          console.warn("IOS Incompatibiltiy, defaulting to empty strings instead of db defaults.!");
         }
         let content = file === undefined ? "" : await file.content.text();
 
@@ -317,3 +319,8 @@ function init() {
 
 }
 document.head.addEventListener("globalPageDependenciesLoaded", init);
+document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
+  setInterval(() => {
+   saveFile(event);
+  }, 120000);
+});
