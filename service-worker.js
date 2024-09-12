@@ -21,17 +21,16 @@ request.onupgradeneeded = FileBase.initObjectStore;
 
 async function redirect(request, url) {
   return new Response("", {
-    "status": 308,
-    "headers": {
-      "Location": url
-    }
+    status: 308,
+    headers: {
+      Location: url,
+    },
   });
 }
 
 const domainName = self.location.hostname;
 
 self.addEventListener("fetch", (event) => {
-  
   let request = event.request;
   let url = new URL(request.url);
   console.log(request.url);
@@ -48,11 +47,14 @@ self.addEventListener("fetch", (event) => {
 
     if (!legalPaths.includes(path)) {
       console.log(path);
-      event.respondWith((async () => {
-        return new Response("404 Not Found", {"status": 404, 
-          headers: {"Content-Type": "text/html; charset=utf-8"}
-        });
-      })());
+      event.respondWith(
+        (async () => {
+          return new Response("404 Not Found", {
+            status: 404,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+          });
+        })(),
+      );
       return;
     }
 
@@ -68,19 +70,22 @@ self.addEventListener("fetch", (event) => {
     if (path.endsWith(".json")) {
       content = "application/json";
     }
-    
-    event.respondWith((async () => {
-      try {
-        let file = await database.readFile(path);
-        return new Response(await file.content.text(), {
-          headers: {"Content-Type": content}
-        });
-      } catch (error) {
-        return new Response(error.toString(), {"status": 500, 
-          headers: {"Content-Type": "text/html; charset=utf-8"}
-        });
-      }
-    })());
+
+    event.respondWith(
+      (async () => {
+        try {
+          let file = await database.readFile(path);
+          return new Response(await file.content.text(), {
+            headers: { "Content-Type": content },
+          });
+        } catch (error) {
+          return new Response(error.toString(), {
+            status: 500,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+          });
+        }
+      })(),
+    );
   } else if (domainName == url.hostname) {
     console.log("Redirect!");
     event.respondWith(redirect(request, "/view" + url.pathname));
