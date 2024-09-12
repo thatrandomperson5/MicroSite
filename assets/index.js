@@ -298,6 +298,6 @@ function init() {
 document.head.addEventListener("globalPageDependenciesLoaded", init);
 document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
   setInterval(() => {
-    saveFile(event);
+    saveFile(event, false);
   }, 120000);
 });
