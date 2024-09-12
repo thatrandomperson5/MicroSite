@@ -227,7 +227,7 @@ function init() {
   const hashEventHandle = (event) => {
     // Sneaky save
     if (currentFile != "") {
-      saveFile(event);
+      saveFile(event, false);
     }
 
     let hash = window.location.hash;
