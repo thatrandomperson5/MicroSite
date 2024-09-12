@@ -301,3 +301,6 @@ document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
     saveFile(event, false);
   }, 120000);
 });
+window.addEventListener("beforeunload", (e) => {
+  saveFile(e, false);
+})
