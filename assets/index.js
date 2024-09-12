@@ -119,9 +119,12 @@ function addFile(event) {
   });
 }
 
-function saveFile(event) {
-  database.saveFile(currentFile, cm.getValue()).then((res) => {
-    alert("Saved " + currentFile);
+function saveFile(event, doAlert=true) {
+  let cf = currentFile;
+  database.saveFile(cf, cm.getValue()).then((res) => {
+    if (doAlert) {
+      alert("Saved " + cf);
+    }
   });
 }
 
@@ -222,10 +225,13 @@ function init() {
   };
 
   const hashEventHandle = (event) => {
-    let hash = window.location.hash;
     // Sneaky save
-    saveFile(event);
+    if (currentFile != "") {
+      saveFile(event);
 
+    }
+
+    let hash = window.location.hash;
     currentFile = hash.slice(10);
     if (!isValidFile(currentFile.split("/"))) {
       window.location.href = "#filepath-index.html";
