@@ -1,8 +1,9 @@
 **/.git
 **/.svn
 **/.hg
+node_modules/
+/node_modules/
 **/node_modules/
-node_modules
 **/.github/
 package.json
 package-lock.json
