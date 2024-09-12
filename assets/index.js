@@ -28,14 +28,14 @@ function renderFiles(files, path = []) {
   var result = "";
   var npath = path;
   for (const [key, value] of Object.entries(files)) {
-    npath.push(key)
-    if (typeof value === 'string' || value instanceof String) {
+    npath.push(key);
+    if (typeof value === "string" || value instanceof String) {
       result += `<li class="d-inline-flex justify-content-between w-100">
       <span><i class="bi bi-file-earmark-code-fill"></i>&nbsp;<a href="#filepath-${npath.join("/")}">${key}</a></span>
       <button class="text-danger btn btn-link p-0 m-0" onclick="deleteFile('${path.join("/")}')"><i class="bi bi-trash3"></i></button>
-      </li>`
+      </li>`;
     } else {
-      let childResult = renderFiles(value, npath)
+      let childResult = renderFiles(value, npath);
       result += renderFolder(key, npath.join("/"), childResult);
     }
     npath.pop();
@@ -43,20 +43,22 @@ function renderFiles(files, path = []) {
   return result;
 }
 
-function set(path, value, obj) { // https://stackoverflow.com/questions/18936915/dynamically-set-property-of-nested-object
+function set(path, value, obj) {
+  // https://stackoverflow.com/questions/18936915/dynamically-set-property-of-nested-object
   var schema = obj; // a moving reference to internal objects within obj
   var pList = path;
   var len = pList.length;
   for (var i = 0; i < len - 1; i++) {
     var elem = pList[i];
-    if (!schema[elem]) schema[elem] = {}
+    if (!schema[elem]) schema[elem] = {};
     schema = schema[elem];
   }
 
   schema[pList[len - 1]] = value;
 }
 
-function deleteKey(object, keys) { // https://stackoverflow.com/questions/51450513/how-can-i-delete-a-key-in-a-nested-javascript-object-with-a-dynamic-number-of-pr
+function deleteKey(object, keys) {
+  // https://stackoverflow.com/questions/51450513/how-can-i-delete-a-key-in-a-nested-javascript-object-with-a-dynamic-number-of-pr
   var last = keys.pop();
   delete keys.reduce((o, k) => o[k], object)[last];
   return object;
@@ -75,7 +77,7 @@ function hasChildren(object, path) {
 function runHandle(event) {
   let ipreview = document.getElementById("result-inline");
   if (ipreview.classList.contains("d-none")) {
-    window.location.href = '/view.html';
+    window.location.href = "/view.html";
   } else {
     ipreview.src = "/view.html";
   }
@@ -89,17 +91,14 @@ function addFolder(event) {
     return;
   }
   try {
-    set(path, {}, tree)
+    set(path, {}, tree);
   } catch (error) {
     alert("You can only create folders in an exisiting directory.");
   }
-  console.log(tree)
-  document.getElementById("fileTree").innerHTML = renderFiles(
-    tree
-  );
+  console.log(tree);
+  document.getElementById("fileTree").innerHTML = renderFiles(tree);
   window.localStorage.setItem("fileTree", JSON.stringify(tree));
 }
-
 
 function addFile(event) {
   var tree = JSON.parse(window.localStorage.getItem("fileTree"));
@@ -109,44 +108,32 @@ function addFile(event) {
     return;
   }
   try {
-    set(path, "id", tree)
+    set(path, "id", tree);
   } catch (error) {
     alert("You can only create file in an exisiting directory.");
   }
 
-
   database.saveFile(path.join("/"), "").then((success) => {
-
     window.localStorage.setItem("fileTree", JSON.stringify(tree));
-    document.getElementById("fileTree").innerHTML = renderFiles(
-      tree
-    );
-  })
-
+    document.getElementById("fileTree").innerHTML = renderFiles(tree);
+  });
 }
-
 
 function saveFile(event) {
   database.saveFile(currentFile, cm.getValue()).then((res) => {
     alert("Saved " + currentFile);
   });
-
 }
-
-
 
 function deleteFile(path) {
   if (confirm("Delete " + path)) {
-
     database.deleteFile(path).then((res) => {
-      console.log(res)
+      console.log(res);
       if (res) {
         var tree = JSON.parse(window.localStorage.getItem("fileTree"));
         deleteKey(tree, path.split("/"));
         window.localStorage.setItem("fileTree", JSON.stringify(tree));
-        document.getElementById("fileTree").innerHTML = renderFiles(
-          tree
-        );
+        document.getElementById("fileTree").innerHTML = renderFiles(tree);
       }
     });
   }
@@ -159,22 +146,17 @@ function deleteFolder(path) {
     return;
   }
   if (confirm("Delete " + path)) {
-
     deleteKey(tree, path.split("/"));
     window.localStorage.setItem("fileTree", JSON.stringify(tree));
-    document.getElementById("fileTree").innerHTML = renderFiles(
-      tree
-    );
+    document.getElementById("fileTree").innerHTML = renderFiles(tree);
   }
 }
-
 
 function isValidFile(path) {
   var tree = JSON.parse(window.localStorage.getItem("fileTree"));
   var result = true;
 
   path.forEach((item) => {
-
     if (tree.hasOwnProperty(item)) {
       tree = tree[item];
     } else {
@@ -188,9 +170,9 @@ function isValidFile(path) {
 // KillSwitch
 const killChannel = new BroadcastChannel("microsite_killswitch_v1");
 
-
 // Modal handle
-document.getElementById("loadModalTrigger").onload = ((event) => event.target.click());
+document.getElementById("loadModalTrigger").onload = (event) =>
+  event.target.click();
 
 document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
   let trigger = document.getElementById("loadModalTrigger");
@@ -200,13 +182,9 @@ document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
   }
 });
 
-
 // Init
 
 function init() {
-
-
-
   // Codemirror
   cm = CodeMirror(document.getElementById("editor"), {
     value: "<!-- Please choose a file! -->",
@@ -219,26 +197,29 @@ function init() {
     autoCloseTags: true,
     matchBrackets: true,
     matchTags: {
-      bothTags: true
+      bothTags: true,
     },
-    gutters: ["CodeMirror-lint-markers", "CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+    gutters: [
+      "CodeMirror-lint-markers",
+      "CodeMirror-linenumbers",
+      "CodeMirror-foldgutter",
+    ],
     foldGutter: true,
-    styleActiveLine: true
+    styleActiveLine: true,
   });
   cm.setSize("100%", "100%");
-
 
   // kill
 
   killChannel.postMessage({
-    "action": "killAll"
+    action: "killAll",
   });
   killChannel.onmessage = (event) => {
     if (event.data.action === "killAll") {
       killChannel.close();
       window.location.href = "/killed.html";
     }
-  }
+  };
 
   const hashEventHandle = (event) => {
     let hash = window.location.hash;
@@ -255,16 +236,15 @@ function init() {
     if (currentFile != "") {
       document.getElementById("currentFile").textContent = currentFile;
       database.readFile(currentFile).then(async (file) => {
-
-
         if (file === undefined) {
-          console.warn("IOS Incompatibiltiy, defaulting to empty strings instead of db defaults.!");
+          console.warn(
+            "IOS Incompatibiltiy, defaulting to empty strings instead of db defaults.!",
+          );
         }
         let content = file === undefined ? "" : await file.content.text();
 
-
         // let content = "";
-        cm.setValue(content)
+        cm.setValue(content);
         let path = currentFile.split("/");
         let nameparts = path[path.length - 1].split(".");
         if (nameparts[nameparts.length - 1] == "js") {
@@ -276,13 +256,9 @@ function init() {
         } else {
           cm.setOption("mode", "");
         }
-
       });
     }
-
-
-
-  }
+  };
   window.addEventListener("hashchange", hashEventHandle);
 
   // init db
@@ -299,28 +275,23 @@ function init() {
 
     // init variables
     if (window.localStorage.getItem("fileTree") == null) {
-      window.localStorage.setItem("fileTree", "{\"index.html\": \"id\"}");
-      database.saveFile("index.html", "<!-- Please choose a file! -->")
+      window.localStorage.setItem("fileTree", '{"index.html": "id"}');
+      database.saveFile("index.html", "<!-- Please choose a file! -->");
     }
 
     document.getElementById("fileTree").innerHTML = renderFiles(
-      JSON.parse(window.localStorage.getItem("fileTree"))
+      JSON.parse(window.localStorage.getItem("fileTree")),
     );
-
 
     hashEventHandle(null);
   };
   request.onupgradeneeded = FileBase.initObjectStore;
 
-
-  // document.getElementById("currentFile").textContent = currentFile; 
-
-
-
+  // document.getElementById("currentFile").textContent = currentFile;
 }
 document.head.addEventListener("globalPageDependenciesLoaded", init);
 document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
   setInterval(() => {
-   saveFile(event);
+    saveFile(event);
   }, 120000);
 });

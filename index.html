@@ -1,28 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-bs-theme="dark">
-
   <head>
-    <meta name="mobile-web-app-capable" content="yes">
-    
+    <meta name="mobile-web-app-capable" content="yes" />
+
     <link rel="manifest" href="manifest.json" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>MicroSite</title>
     <script src="/assets/index-dependencies.js"></script>
 
     <script src="/assets/filebase.js"></script>
-    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="/assets/style.css" />
   </head>
 
   <body class="h-100 d-flex flex-column">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
-
-        <a class="navbar-brand d-flex align-items-center " href="#">
-          <i class="bi bi-motherboard-fill fs-3 lh-1"></i>&nbsp;<span class="lh-1">MicroSite</span>
+        <a class="navbar-brand d-flex align-items-center" href="#">
+          <i class="bi bi-motherboard-fill fs-3 lh-1"></i>&nbsp;<span
+            class="lh-1"
+            >MicroSite</span
+          >
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -34,16 +47,25 @@
               <button class="nav-link" onclick="runHandle(event)">Run</button>
             </li>
             <li class="nav-item">
-              <button class="nav-link" onclick="document.getElementById('result-inline').classList.toggle('d-none')">Toggle Inline Preview</button>
+              <button
+                class="nav-link"
+                onclick="document.getElementById('result-inline').classList.toggle('d-none')"
+              >
+                Toggle Inline Preview
+              </button>
             </li>
-
           </ul>
         </div>
       </div>
     </nav>
     <div class="d-flex h-100">
-      <div class="flex-shrink-0 p-3 overflow-auto w-25" style="min-width: 200px;">
-        <div class="d-flex align-items-center pb-3 mb-3 border-bottom justify-content-between">
+      <div
+        class="flex-shrink-0 p-3 overflow-auto w-25"
+        style="min-width: 200px"
+      >
+        <div
+          class="d-flex align-items-center pb-3 mb-3 border-bottom justify-content-between"
+        >
           <span id="currentFile">No File</span>
           <div>
             <button class="btn btn-link p-1" onclick="addFolder(event)">
@@ -54,34 +76,44 @@
             </button>
           </div>
         </div>
-        <ul id="fileTree" class="list-unstyled ps-0">
-
-        </ul>
+        <ul id="fileTree" class="list-unstyled ps-0"></ul>
       </div>
       <div class="w-100 h-100 d-flex flex-column">
         <div id="editor" class="h-100 w-100 overflow-auto"></div>
         <iframe id="result-inline" class="w-100 h-100 d-none" src="about:blank">
-
         </iframe>
       </div>
     </div>
-    <button type="button" data-bs-dismiss="modal" id="loadModalTrigger" class="d-none" data-bs-toggle="modal" data-bs-target="#loadModal"></button>
-    <div class="modal fade" id="loadModal" data-bs-backdrop="static" tabindex="-1" aria-hidden="false">
+    <button
+      type="button"
+      data-bs-dismiss="modal"
+      id="loadModalTrigger"
+      class="d-none"
+      data-bs-toggle="modal"
+      data-bs-target="#loadModal"
+    ></button>
+    <div
+      class="modal fade"
+      id="loadModal"
+      data-bs-backdrop="static"
+      tabindex="-1"
+      aria-hidden="false"
+    >
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Loading...</h1>
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+              Loading...
+            </h1>
           </div>
           <div class="modal-body d-flex w-100 justify-content-center">
             <div class="spinner-border" role="status">
               <span class="visually-hidden">Please wait.</span>
             </div>
-
           </div>
         </div>
       </div>
     </div>
     <script src="/assets/index.js"></script>
   </body>
-
 </html>
