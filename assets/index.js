@@ -119,7 +119,7 @@ function addFile(event) {
   });
 }
 
-function saveFile(event, doAlert=true) {
+function saveFile(event, doAlert = true) {
   let cf = currentFile;
   database.saveFile(cf, cm.getValue()).then((res) => {
     if (doAlert) {
@@ -228,7 +228,6 @@ function init() {
     // Sneaky save
     if (currentFile != "") {
       saveFile(event);
-
     }
 
     let hash = window.location.hash;
@@ -304,4 +303,4 @@ document.head.addEventListener("globalPageDependenciesLoaded", (event) => {
 window.onbeforeunload = (e) => {
   saveFile(e, false);
   return "Working file saved!";
-}
+};
