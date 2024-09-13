@@ -91,15 +91,16 @@
         let actualUrl = "/view" + url;
         console.log(actualUrl);
         // Refresh files
-        navigator.serviceWorker.getRegistration("/view/").then((registration) => {
-          if (registration) {
-            registration.active.postMessage({type: "filetreeRefresh"});
-          } else {
-            alert("Please wait until service worker is registered!");
-
-          }
-          document.getElementById("win").setAttribute("src", actualUrl);
-        });
+        navigator.serviceWorker
+          .getRegistration("/view/")
+          .then((registration) => {
+            if (registration) {
+              registration.active.postMessage({ type: "filetreeRefresh" });
+            } else {
+              alert("Please wait until service worker is registered!");
+            }
+            document.getElementById("win").setAttribute("src", actualUrl);
+          });
       }
       window.onload = () => {
         goTo(window.localStorage.getItem("viewerUrl"));

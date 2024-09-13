@@ -96,7 +96,6 @@ self.addEventListener("fetch", (event) => {
   }
 });
 
-
 // Handle messages
 self.addEventListener("message", (event) => {
   console.log(`Message received: ${event.data}`);
