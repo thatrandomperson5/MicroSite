@@ -94,6 +94,9 @@
         navigator.serviceWorker.getRegistration().then((registration) => {
           if (registration) {
             registration.active.postMessage({type: "filetreeRefresh"});
+          } else {
+            alert("Please wait until service worker is registered!");
+
           }
           document.getElementById("win").setAttribute("src", actualUrl);
         });
