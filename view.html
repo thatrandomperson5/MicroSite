@@ -90,7 +90,13 @@
         window.localStorage.setItem("viewerUrl", url);
         let actualUrl = "/view" + url;
         console.log(actualUrl);
-        document.getElementById("win").setAttribute("src", actualUrl);
+        // Refresh files
+        navigator.serviceWorker.getRegistration().then((registration) => {
+          if (registration) {
+            registration.active.postMessage({type: "filetreeRefresh"});
+          }
+          document.getElementById("win").setAttribute("src", actualUrl);
+        });
       }
       window.onload = () => {
         goTo(window.localStorage.getItem("viewerUrl"));
