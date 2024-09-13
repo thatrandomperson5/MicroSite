@@ -95,3 +95,14 @@ self.addEventListener("fetch", (event) => {
     //event.respondWith(fetch(request));
   }
 });
+
+
+// Handle messages
+self.addEventListener("message", (event) => {
+  console.log(`Message received: ${event.data}`);
+  if (event.data["type"] === "filetreeRefresh") {
+    database.keys().then((result) => {
+      legalPaths = result;
+    });
+  }
+});
