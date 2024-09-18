@@ -90,6 +90,7 @@
         window.localStorage.setItem("viewerUrl", url);
         let actualUrl = "/view" + url;
         console.log(actualUrl);
+        
         // Refresh files
         navigator.serviceWorker
           .getRegistration("/view/")
